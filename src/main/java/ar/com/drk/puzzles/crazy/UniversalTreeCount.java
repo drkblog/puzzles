@@ -21,6 +21,21 @@ public class UniversalTreeCount {
         final Node root = newTreeLevelOrder(values, 0);
 
         printTree(root, 0);
+        System.out.println("Universal trees: " + countUniversalTrees(root));
+    }
+
+    private static int countUniversalTrees(Node node) {
+        if (node.left == null && node.right == null)
+            return 1;
+        if (node.left == null)
+            return countUniversalTrees(node.right)
+                    + ((node.value == node.right.value) ? 1 : 0);
+        if (node.right == null)
+            return countUniversalTrees(node.left)
+                    + ((node.value == node.left.value) ? 1 : 0);
+        return countUniversalTrees(node.left)
+                + countUniversalTrees(node.right)
+                + ((node.value == node.left.value && node.value == node.right.value) ? 1 : 0);
     }
 
     private static void printTree(final Node node, final int level) {
