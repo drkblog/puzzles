@@ -1,5 +1,6 @@
 package ar.com.drk.puzzles.crazy;
 
+import java.util.BitSet;
 import java.util.stream.IntStream;
 
 public class UniversalTreeCount {
@@ -20,7 +21,7 @@ public class UniversalTreeCount {
 
         final Node root = newTreeLevelOrder(values, 0);
 
-        printTree(root, 0);
+        printTree(root);
         System.out.println("Universal trees: " + countUniversalTrees(root));
     }
 
@@ -38,16 +39,24 @@ public class UniversalTreeCount {
                 + ((node.value == node.left.value && node.value == node.right.value) ? 1 : 0);
     }
 
-    private static void printTree(final Node node, final int level) {
-        IntStream.range(0, level-1).forEach(i -> System.out.print("|  "));
-        if (level > 0) System.out.print("├──");
-        System.out.println(node.value);
+    private static void printTree(final Node node) {
+        BitSet levelStatus = new BitSet();
+        printTree(node, 0, levelStatus);
+    }
+    private static void printTree(final Node node, final int level, final BitSet levelStatus) {
+        IntStream.range(0, level-1)
+            .forEach(i -> System.out.print(levelStatus.get(i) ? "|  ": "   "));
+        if (level > 0) {
+            System.out.print(levelStatus.get(level) ? "└──":"├──");
+        }
+            System.out.println(node.value);
         if (node.left != null) {
-            printTree(node.left, level+1);
+            printTree(node.left, level+1, levelStatus);
         }
         if (node.right != null) {
-            printTree(node.right, level+1);
+            printTree(node.right, level+1, levelStatus);
         }
+        levelStatus.set(level);
     }
 
     private static Node newTreeLevelOrder(final int[] values, final int index) {
