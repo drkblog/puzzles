@@ -16,16 +16,21 @@ public class UniversalTreeCount {
         }
     }
 
+    private static int count = 0;
+
     public static void main(String[] args) {
-        int values[] = new int[] {1,0,1,0,1,1,1,1,1,1};
+        int values[] = new int[] {1,0,1,0,1,1,1,1,1,1,1,1,1};
 
         final Node root = newTreeLevelOrder(values, 0);
 
         printTree(root);
+        System.out.println("Total nodes: " + values.length);
         System.out.println("Universal trees: " + countUniversalTrees(root));
+        System.out.println("countUniversalTrees() hits: " + count);
     }
 
     private static int countUniversalTrees(Node node) {
+        count++;
         if (node.left == null && node.right == null)
             return 1;
         if (node.left == null)
@@ -44,13 +49,14 @@ public class UniversalTreeCount {
         printTree(node, 0, levelStatus);
     }
     private static void printTree(final Node node, final int level, final BitSet levelStatus) {
-        IntStream.range(0, level-1)
-            .forEach(i -> System.out.print(levelStatus.get(i) ? "|  ": "   "));
+        IntStream.range(1, level)
+            .forEach(i -> System.out.print(!levelStatus.get(i) ? "|  ": "   "));
         if (level > 0) {
             System.out.print(levelStatus.get(level) ? "└──":"├──");
         }
-            System.out.println(node.value);
+        System.out.println(node.value);
         if (node.left != null) {
+            levelStatus.clear(level+1);
             printTree(node.left, level+1, levelStatus);
         }
         if (node.right != null) {
