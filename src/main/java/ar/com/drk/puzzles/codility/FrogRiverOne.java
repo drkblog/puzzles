@@ -1,4 +1,4 @@
-package ar.com.drk.puzzles.crazy;
+package ar.com.drk.puzzles.codility;
 
 import java.util.BitSet;
 
