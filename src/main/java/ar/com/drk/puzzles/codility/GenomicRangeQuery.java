@@ -6,6 +6,8 @@ import java.util.Arrays;
 
 public class GenomicRangeQuery {
 
+  // https://app.codility.com/demo/results/trainingFT5DRC-YUD/
+
   public static void main(String[] args) {
     String str1 = "CAGCCTA";
     int[] p1 = new int[] {2, 5, 0};
@@ -17,17 +19,25 @@ public class GenomicRangeQuery {
   static int[] solution(String S, int[] P, int[] Q) {
     final int queries = P.length;
     final int[] result = new int[queries];
-    for(int q = 0; q < queries; q++) {
-      int minimum = 3;
-      for(int i = P[q]; i <= Q[q]; i++) {
-        int iOrdinal = getOrdinal(S.charAt(i));
-        if (iOrdinal < minimum) {
-          minimum = iOrdinal;
+    final int[][] prefix = new int[4][S.length()+1];
+    for(int p=0; p < S.length(); p++) {
+      for(int o=0; o < 4; o++) {
+        if (o == getOrdinal(S.charAt(p))) {
+          prefix[o][p + 1] = prefix[o][p] + 1;
+        } else {
+          prefix[o][p + 1] = prefix[o][p];
         }
       }
-      result[q] = minimum+1;
+    }
+    for(int q=0; q < queries; q++) {
+      while(!isPresent(prefix, P[q], Q[q], result[q])) result[q]++;
+      result[q]++;
     }
     return result;
+  }
+
+  private static boolean isPresent(int[][] prefix, int p, int q, int n) {
+    return prefix[n][q+1] - prefix[n][p] > 0;
   }
 
   private static int getOrdinal(final char charAt) {
