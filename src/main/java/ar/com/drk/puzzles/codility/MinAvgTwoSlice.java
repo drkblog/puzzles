@@ -1,5 +1,7 @@
 package ar.com.drk.puzzles.codility;
 
+import java.util.Arrays;
+
 public class MinAvgTwoSlice {
 
     public static void main(String[] args) {
