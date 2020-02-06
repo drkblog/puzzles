@@ -11,20 +11,32 @@ public class MinAvgTwoSlice {
     }
 
     static int solution(int[] A) {
-        double[] average = new double[A.length - 1];
-        for (int i=0; i<A.length-1; i++) {
-            average[i] = ((double) A[i] + A[i+1]) / 2;
+        final int length = A.length;
+        int[] prefix = new int[length];
+        prefix[0] = A[0];
+        for (int i = 1; i< length; i++) {
+            prefix[i] = prefix[i-1] + A[i];
         }
-        double min = 10000;
-        int p=0;
-        int firstMinimum = 0;
-        while(p < A.length-1) {
-            if (average[p] < min) {
-                min = average[p];
-                firstMinimum = p;
+        int a = 0, b = a+1;
+        double minimum = 10000.0;
+        int minimumStart = 0;
+        while(a < length-1 && b < length) {
+            double current = average(prefix, a, b);
+            if (current < minimum) {
+                minimum = current;
+                minimumStart = a;
             }
-            p++;
+            if (b == a+1) {
+                b++;
+            } else {
+                a++;
+            }
         }
-        return firstMinimum;
+        return minimumStart;
+    }
+
+    private static double average(final int[] prefix, final int a, final int b) {
+        final int offset = (a > 0) ? prefix[a - 1] : 0;
+        return (double)(prefix[b]-offset)/(b-a+1);
     }
 }

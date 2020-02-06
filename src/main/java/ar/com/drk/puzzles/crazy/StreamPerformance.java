@@ -11,12 +11,17 @@ public class StreamPerformance {
     private static final int RUNS_LARGE = 100;
     public static void main(String[] args) {
         Integer[] numbers = new Integer[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-        Integer[] largeNumbers = new Integer[10000];
+        Integer[] largeNumbers = new Integer[1000];
         for(int i=0; i<largeNumbers.length; i++) largeNumbers[i] = i;
+
 
         long elapsedStreamSmall = runAndBenchmark(() -> {
             Set<Integer> set = Arrays.stream(numbers).collect(Collectors.toSet());
         }, "Stream small", RUNS);
+
+        long elapsedStreamDistinctSmall = runAndBenchmark(() -> {
+            long n = Arrays.stream(numbers).distinct().count();
+        }, "StreamDistinct small", RUNS);
 
         long elapsedForEachSmall = runAndBenchmark(() -> {
             Set<Integer> set = new HashSet<>();
@@ -30,6 +35,10 @@ public class StreamPerformance {
         long elapsedStreamLarge =runAndBenchmark(() -> {
             Set<Integer> set = Arrays.stream(largeNumbers).collect(Collectors.toSet());
         }, "Stream large", RUNS_LARGE);
+
+        long elapsedStreamDistinctLarge =runAndBenchmark(() -> {
+            long n = Arrays.stream(largeNumbers).distinct().count();
+        }, "StreamDistinct large", RUNS_LARGE);
 
         long elapsedForEachLarge =runAndBenchmark(() -> {
             Set<Integer> set = new HashSet<>();
