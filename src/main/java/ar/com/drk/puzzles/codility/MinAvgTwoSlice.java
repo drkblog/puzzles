@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 public class MinAvgTwoSlice {
 
+    //https://app.codility.com/demo/results/trainingT3N7QK-A89/
     public static void main(String[] args) {
         int[] t1 = new int[] {4, 2, 2, 5, 1, 5, 8}; // 1
         int[] t2 = new int[] {-3, -5, -8, -4, -10}; // 2
