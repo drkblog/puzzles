@@ -3,10 +3,14 @@ package ar.com.drk.puzzles.codility;
 import java.util.Arrays;
 
 public class CountDiv {
+
+    // Naive solution got 12% -> https://app.codility.com/demo/results/trainingMRESK7-2M2/
+    // Passed https://app.codility.com/demo/results/trainingJSFNZV-ME4/
+
     public static void main(String[] args) {
         int[][] testCases = new int[][]{
                 {6, 11, 2, 3},
-                {6, 11, 2, 3}
+                {3, 111, 5, 22}
         };
         for (int[] test : testCases) {
             int result = solution(test[0], test[1], test[2]);
@@ -15,10 +19,10 @@ public class CountDiv {
     }
 
     static int solution(int A, int B, int K) {
-        int result = 0;
-        for (int i = A; i < B; i++) {
-            if (i % K == 0) result++;
-        }
-        return result;
+        int lower = A;
+        int higher = B;
+        while (lower % K != 0) lower++;
+        while (higher % K != 0) higher--;
+        return (higher - lower) / K + 1;
     }
 }
