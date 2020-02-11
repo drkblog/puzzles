@@ -19,10 +19,10 @@ public class CountDiv {
     }
 
     static int solution(int A, int B, int K) {
-        int lower = A;
-        int higher = B;
-        while (lower % K != 0) lower++;
-        while (higher % K != 0) higher--;
+        int lower = A + (K - (A % K));
+        int higher = B - (K - (B % K));
+//        while (lower % K != 0) lower++;
+//        while (higher % K != 0) higher--;
         return (higher - lower) / K + 1;
     }
 }
