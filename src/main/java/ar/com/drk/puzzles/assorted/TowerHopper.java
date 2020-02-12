@@ -9,29 +9,13 @@ public class TowerHopper {
     }
 
     private static boolean canHop(int[] path) {
-        int current = 0;
-        while (current < path.length && path[current] != 0) {
-            current = hop(path, current);
-        }
-        return current >= path.length;
-    }
-
-    private static int hop(int[] path, int current) {
-        final int farthest = path[current] + current;
-
-        if (farthest >= path.length) {
-            return farthest;
-        }
-
-        int best = current;
-        int tallest = 0;
-        for (int step = current + 1; step <= farthest; step++) {
-            final int ponderedHeight = path[step] - (farthest - step);
-            if (ponderedHeight > tallest) {
-                tallest = ponderedHeight;
-                best = step;
+        int farthest = 0;
+        for (int step = 0; step < path.length; step++) {
+            int farthestFromHere = step + path[step];
+            if (farthestFromHere > farthest) {
+                farthest = farthestFromHere;
             }
         }
-        return best;
+        return farthest >= path.length;
     }
 }

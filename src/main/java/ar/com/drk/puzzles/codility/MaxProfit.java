@@ -1,6 +1,9 @@
 package ar.com.drk.puzzles.codility;
 
 public class MaxProfit {
+
+  // https://app.codility.com/demo/results/training8TWX6T-45S/
+
   public static void main(String[] args) {
     int[] test = new int[]{23171, 21011, 21123, 21366, 21013, 21367};
     System.out.println("Max profit is: " + solution(test));
