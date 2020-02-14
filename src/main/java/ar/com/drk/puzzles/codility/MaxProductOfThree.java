@@ -8,7 +8,7 @@ public class MaxProductOfThree {
     }
 
     static int solution(int[] A) {
-        return heap[0] * heap[1] * heap[2];
+        return 1;
     }
 
     static class Heap {
@@ -19,9 +19,6 @@ public class MaxProductOfThree {
             heap = new int[size];
         }
 
-        public int[] findHighestValues(int[] values) {
-
-        }
 
         private int findMinimum() {
             int minimum = 0;
