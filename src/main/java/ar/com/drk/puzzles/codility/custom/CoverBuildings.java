@@ -47,13 +47,6 @@ https://app.codility.com/cert/view/certJ94XWB-J9SZAVRD49PNQW4U/details/
     }
 
     private static int solution(int[] H) {
-        int left = 0, right = H.length - 1;
-        while (right - left > 1) {
-
-        }
-    }
-
-    private static int solution1(int[] H) {
         int maximum = 0;
         int firstMax = 0, lastMax = 0;
         int prevSecondMax = 0, postSecondMax = 0;

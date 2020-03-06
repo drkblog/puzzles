@@ -1,24 +1,35 @@
 package ar.com.drk.puzzles.codility;
 
+import com.google.common.collect.Lists;
+
 import java.util.Arrays;
+import java.util.List;
 
 public class NumberOfDiscIntersections {
 
     // N^2 https://app.codility.com/demo/results/trainingC5R4UX-ZVR/
+    // O(n) https://app.codility.com/demo/results/trainingEEUT75-56B/
 
     public static void main(String[] args) {
-        final int[] test = new int[]{1, 5, 2, 1, 4, 0};
-        final int[] testThreeOnes = new int[]{1, 1, 1};
-        final int[] testSingle = new int[]{10};
-        final int[] testOverflow = new int[]{2147483647, 2147483647};
-        System.out.println("Intersections: " + solution(test));
+        final List<TestCase> cases = Lists.newArrayList(
+                new TestCase(new int[]{1, 5, 2, 1, 4, 0}, 11),
+                new TestCase(new int[]{1, 1, 1}, 3),
+                new TestCase(new int[]{10}, 0),
+                new TestCase(new int[]{2147483647, 2147483647}, 1)
+        );
+        cases.forEach(testCase -> {
+            int solution = solution(testCase.dataset);
+            System.out.println(Arrays.toString(testCase.dataset));
+            System.out.println("Intersections: " + solution + " " + ((solution == testCase.result) ? "OK" : "Wrong"));
+        });
+        ;
     }
 
     static int solution(int[] A) {
         if (A.length < 2) {
             return 0;
         }
-        int carry = 0;
+        long carry = 0;
         long[] start = new long[A.length];
         long[] stop = new long[A.length];
         for (int i = 0; i < A.length; i++) {
@@ -33,27 +44,26 @@ public class NumberOfDiscIntersections {
                 stop[(int) finishes]++;
             }
         }
-        System.out.println(Arrays.toString(A));
-        System.out.println(Arrays.toString(start));
-        System.out.println(Arrays.toString(stop));
-        long intersections = combinationsWithoutRepetitions(carry);
+        int intersections = (int) combinationsWithoutRepetitionsOfTwo(carry);
         for (int i = 0; i < A.length; i++) {
-            intersections += (carry * start[i]) + combinationsWithoutRepetitions(start[i]);
-            System.out.println("Carry " + carry + " - Intersections [" + i + "]" + intersections);
+            intersections += (carry * start[i]) + combinationsWithoutRepetitionsOfTwo(start[i]);
             carry += start[i];
             carry -= stop[i];
         }
-        return (int) intersections;
+        return (intersections <= 10000000) ? intersections : -1;
     }
 
-    static long combinationsWithoutRepetitions(long n) {
-        return factorialOf(n) / (factorialOf(2) * factorialOf(n - 2));
+    static long combinationsWithoutRepetitionsOfTwo(long n) {
+        return (n * (n - 1)) / 2;
     }
 
-    static long factorialOf(long n) {
-        int result = 1;
-        for (long i = 2; i <= n; i++) result *= i;
-        return result;
-    }
+    static class TestCase {
+        int[] dataset;
+        int result;
 
+        public TestCase(int[] dataset, int result) {
+            this.dataset = dataset;
+            this.result = result;
+        }
+    }
 }
