@@ -7,6 +7,7 @@ import java.util.List;
 public class Brackets {
 
     // https://app.codility.com/demo/results/trainingF6UK7J-FQS/
+    // Also solves: https://app.codility.com/demo/results/trainingNBZP6F-6DA/
 
     public static void main(String[] args) {
         List<TestCase> cases = Lists.newArrayList(
