@@ -6,23 +6,25 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
-public class Dominator {
+public class EquiLeader {
 
-    // With a map: https://app.codility.com/demo/results/trainingP5N858-TAE/
-    // With a stack: https://app.codility.com/demo/results/trainingX5867Y-DHZ/
+    // https://app.codility.com/demo/results/trainingBWYKN7-FS6/
 
     public static void main(String[] args) {
         final List<TestCase> cases = Lists.newArrayList(
-                new TestCase(new int[]{3, 4, 3, 2, 3, -1, 3, 3}, 3)
+                new TestCase(new int[]{4, 3, 4, 4, 4, 2}, 2),
+                new TestCase(new int[]{1, 2}, 0),
+                new TestCase(new int[]{0, 0}, 1)
         );
         cases.forEach(testCase -> {
-            int index = solution(testCase.dataset);
-            System.out.println("Dominator for " + Arrays.toString(testCase.dataset) + ": " + testCase.dataset[index] + " " + ((testCase.dataset[index] == testCase.result) ? "OK" : "Wrong"));
+            int count = solution(testCase.dataset);
+            System.out.println("EquiLeaders for " + Arrays.toString(testCase.dataset) + ": " + count + " " + ((count == testCase.result) ? "OK" : "Wrong"));
         });
         ;
     }
 
     private static int solution(int[] A) {
+        int equiLeaders = 0;
         Stack<Integer> stack = new Stack<>();
         for (int i = 0; i < A.length; i++) {
             if (stack.size() >= 1) {
@@ -35,19 +37,32 @@ public class Dominator {
                 stack.push(A[i]);
             }
         }
+        Integer dominator = null;
+        int dominatorCount = 0;
         if (!stack.isEmpty()) {
             Integer value = stack.peek();
-            int count = 0;
             for (int i = 0; i < A.length; i++) {
                 if (A[i] == value) {
-                    if (++count > A.length / 2) {
-                        return i;
+                    if (++dominatorCount > A.length / 2) {
+                        dominator = i;
                     }
                 }
             }
         }
-        return -1;
+        if (dominator != null) {
+            int dominatorPassed = 0;
+            for (int i = 0; i < A.length; i++) {
+                if (A[i] == A[dominator]) {
+                    dominatorPassed++;
+                }
+                if (dominatorPassed > (i + 1) / 2 && dominatorCount - dominatorPassed > (A.length - i - 1) / 2) {
+                    equiLeaders++;
+                }
+            }
+        }
+        return equiLeaders;
     }
+
 
     static class TestCase {
         int[] dataset;
