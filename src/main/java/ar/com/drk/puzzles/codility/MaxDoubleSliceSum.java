@@ -17,6 +17,7 @@ public class MaxDoubleSliceSum {
             int result = solution(testCase.dataset);
             System.out.println("Maximum double slice for " + Arrays.toString(testCase.dataset) + ": " + result + " " + ((result == testCase.result) ? "OK" : "Wrong"));
         });
+        
     }
 
     public static int solution(int[] A) {

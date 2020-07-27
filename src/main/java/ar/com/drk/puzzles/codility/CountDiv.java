@@ -6,6 +6,7 @@ public class CountDiv {
 
     // Naive solution got 12% -> https://app.codility.com/demo/results/trainingMRESK7-2M2/
     // Passed https://app.codility.com/demo/results/trainingJSFNZV-ME4/
+    // Passed formulae https://app.codility.com/demo/results/trainingTPB3NW-YYP/
 
     public static void main(String[] args) {
         int[][] testCases = new int[][]{
@@ -19,10 +20,8 @@ public class CountDiv {
     }
 
     static int solution(int A, int B, int K) {
-        int lower = A + (K - (A % K));
-        int higher = B - (K - (B % K));
-//        while (lower % K != 0) lower++;
-//        while (higher % K != 0) higher--;
+        int higher = B - (B % K);
+        int lower = A + ((K - (A % K)) % K);
         return (higher - lower) / K + 1;
     }
 }
