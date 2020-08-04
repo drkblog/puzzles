@@ -10,8 +10,9 @@ public class CountDiv {
 
     public static void main(String[] args) {
         int[][] testCases = new int[][]{
-                {6, 11, 2, 3},
-                {3, 111, 5, 22}
+            {5, 11, 4, 1},
+            {6, 11, 2, 3},
+            {3, 111, 5, 22}
         };
         for (int[] test : testCases) {
             int result = solution(test[0], test[1], test[2]);
