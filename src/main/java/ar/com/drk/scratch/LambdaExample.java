@@ -32,10 +32,11 @@ public class LambdaExample {
         values.applyAndSum(value -> value.multiply(BigDecimal.valueOf(10)));
 
         Set<Item> items = new HashSet<>();
-        items.stream()
+        
+        BigDecimal sum = items.stream()
                 .parallel()
                 .filter(item -> item.getName().startsWith("A"))
-                .map(item -> item.getValue())
+                .map(Item::getValue)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         BigDecimal total = BigDecimal.ZERO;
