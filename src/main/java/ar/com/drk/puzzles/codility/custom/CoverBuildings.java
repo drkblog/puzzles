@@ -5,7 +5,7 @@ import com.google.common.collect.Lists;
 import java.util.List;
 
 public class CoverBuildings {
-    /* There are N rectangular buildings standing along the road next to each other. The K-th building is of size H[K] × 1.
+  /* There are N rectangular buildings standing along the road next to each other. The K-th building is of size H[K] × 1.
 Because a renovation of all of the buildings is planned, we want to cover them with rectangular banners until the renovations are finished. Of course, to cover a building, the banner has to be at least as high as the building. We can cover more than one building with a banner if it is wider than 1.
 For example, to cover buildings of heights 3, 1, 4 we could use a banner of size 4×3 (i.e. of height 4 and width 3), marked here in blue:
 Buildings of sizes (3 × 1), (1 × 1), (4 × 1), covered with scaffolding of size 4×3
@@ -30,57 +30,57 @@ N is an integer within the range [1..100,000];
 each element of array H is an integer within the range [1..10,000].
 
 https://app.codility.com/cert/view/certJ94XWB-J9SZAVRD49PNQW4U/details/
-     */
-    public static void main(String[] args) {
-        final List<TestCase> cases = Lists.newArrayList(
-                new TestCase(new int[]{1, 2, 3, 4, 5}, 19),
-                new TestCase(new int[]{3, 1, 4}, 10),
-                new TestCase(new int[]{5, 3, 2, 4}, 17),
-                new TestCase(new int[]{5, 3, 5, 2, 1}, 19),
-                new TestCase(new int[]{7, 7, 3, 7, 7}, 35),
-                new TestCase(new int[]{1, 1, 7, 6, 6, 6}, 30)
-        );
-        cases.forEach(testCase -> {
-            int result = solution(testCase.dataset);
-            System.out.println("Minimum area returned " + result + " " + ((result == testCase.result) ? "OK" : "Wrong"));
-        });
+   */
+  public static void main(final String[] args) {
+    final List<TestCase> cases = Lists.newArrayList(
+        new TestCase(new int[]{1, 2, 3, 4, 5}, 19),
+        new TestCase(new int[]{3, 1, 4}, 10),
+        new TestCase(new int[]{5, 3, 2, 4}, 17),
+        new TestCase(new int[]{5, 3, 5, 2, 1}, 19),
+        new TestCase(new int[]{7, 7, 3, 7, 7}, 35),
+        new TestCase(new int[]{1, 1, 7, 6, 6, 6}, 30)
+    );
+    cases.forEach(testCase -> {
+      final int result = solution(testCase.dataset);
+      System.out.println("Minimum area returned " + result + " " + ((result == testCase.result) ? "OK" : "Wrong"));
+    });
+  }
+
+  private static int solution(final int[] H) {
+    int maximum = 0;
+    int firstMax = 0, lastMax = 0;
+    int prevSecondMax = 0, postSecondMax = 0;
+    for (int i = 0; i < H.length; i++) {
+      if (H[i] > maximum) {
+        prevSecondMax = maximum;
+        postSecondMax = 0;
+        maximum = H[i];
+        firstMax = i;
+        lastMax = i;
+      } else if (H[i] == maximum) {
+        lastMax = i;
+        postSecondMax = 0;
+      } else if (H[i] > postSecondMax) {
+        postSecondMax = H[i];
+      }
     }
 
-    private static int solution(int[] H) {
-        int maximum = 0;
-        int firstMax = 0, lastMax = 0;
-        int prevSecondMax = 0, postSecondMax = 0;
-        for (int i = 0; i < H.length; i++) {
-            if (H[i] > maximum) {
-                prevSecondMax = maximum;
-                postSecondMax = 0;
-                maximum = H[i];
-                firstMax = i;
-                lastMax = i;
-            } else if (H[i] == maximum) {
-                lastMax = i;
-                postSecondMax = 0;
-            } else if (H[i] > postSecondMax) {
-                postSecondMax = H[i];
-            }
-        }
-
-        if (prevSecondMax == 0 && postSecondMax == 0) {
-            return maximum * H.length;
-        }
-
-        int areaAltA = maximum * (lastMax + 1) + postSecondMax * (H.length - lastMax - 1);
-        int areaAltB = prevSecondMax * (firstMax) + maximum * (H.length - firstMax);
-        return Math.min(areaAltA, areaAltB);
+    if (prevSecondMax == 0 && postSecondMax == 0) {
+      return maximum * H.length;
     }
 
-    static class TestCase {
-        int[] dataset;
-        int result;
+    final int areaAltA = maximum * (lastMax + 1) + postSecondMax * (H.length - lastMax - 1);
+    final int areaAltB = prevSecondMax * (firstMax) + maximum * (H.length - firstMax);
+    return Math.min(areaAltA, areaAltB);
+  }
 
-        public TestCase(int[] dataset, int result) {
-            this.dataset = dataset;
-            this.result = result;
-        }
+  static class TestCase {
+    int[] dataset;
+    int result;
+
+    public TestCase(final int[] dataset, final int result) {
+      this.dataset = dataset;
+      this.result = result;
     }
+  }
 }

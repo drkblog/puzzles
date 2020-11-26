@@ -7,46 +7,46 @@ import java.util.function.Function;
 
 public class LambdaExample {
 
-    static class ValueSet {
-        private Set<BigDecimal> values = new HashSet<>();
+  static class ValueSet {
+    private Set<BigDecimal> values = new HashSet<>();
 
-        public BigDecimal applyAndSum(Function<BigDecimal, BigDecimal> function) {
-            return values.stream()
-                    .map(function::apply)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-        }
+    public BigDecimal applyAndSum(final Function<BigDecimal, BigDecimal> function) {
+      return values.stream()
+          .map(function::apply)
+          .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+  }
+
+  static class Item {
+    public String getName() {
+      return "";
     }
 
-    static class Item {
-        public String getName() {
-            return "";
-        }
+    public BigDecimal getValue() {
+      return BigDecimal.ONE;
+    }
+  }
 
-        public BigDecimal getValue() {
-            return BigDecimal.ONE;
-        }
+  public static void main(final String[] args) {
+    final ValueSet values = new ValueSet();
+    values.applyAndSum(value -> value.multiply(BigDecimal.valueOf(10)));
+
+    final Set<Item> items = new HashSet<>();
+
+    final BigDecimal sum = items.stream()
+        .parallel()
+        .filter(item -> item.getName().startsWith("A"))
+        .map(Item::getValue)
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+    BigDecimal total = BigDecimal.ZERO;
+    for (final Item item : items) {
+      if (item.getName().startsWith("A")) {
+        total = total.add(item.getValue());
+      }
     }
 
-    public static void main(String[] args) {
-        ValueSet values = new ValueSet();
-        values.applyAndSum(value -> value.multiply(BigDecimal.valueOf(10)));
-
-        Set<Item> items = new HashSet<>();
-        
-        BigDecimal sum = items.stream()
-                .parallel()
-                .filter(item -> item.getName().startsWith("A"))
-                .map(Item::getValue)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        BigDecimal total = BigDecimal.ZERO;
-        for (Item item : items) {
-            if (item.getName().startsWith("A")) {
-                total = total.add(item.getValue());
-            }
-        }
-
-        Thread thread = new Thread(() -> System.out.println("Ejemplo"));
-        thread.start();
-    }
+    final Thread thread = new Thread(() -> System.out.println("Ejemplo"));
+    thread.start();
+  }
 }

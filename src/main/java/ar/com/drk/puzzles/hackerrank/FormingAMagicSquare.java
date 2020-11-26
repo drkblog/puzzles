@@ -30,9 +30,9 @@ public class FormingAMagicSquare {
     @Override
     public int[][] next() {
       final int[][] result = new int[SIDE][SIDE];
-      for(int digit = DIGITS; digit > 0; digit--) {
-        final int factor = (int)Math.pow(10, 10-digit);
-        result[(digit - 1) / SIDE][(digit - 1) % SIDE] = current % factor / (factor/10);
+      for (int digit = DIGITS; digit > 0; digit--) {
+        final int factor = (int) Math.pow(10, 10 - digit);
+        result[(digit - 1) / SIDE][(digit - 1) % SIDE] = current % factor / (factor / 10);
       }
       nextPermutation();
       return result;
@@ -40,8 +40,8 @@ public class FormingAMagicSquare {
 
     private void nextPermutation() {
       int used = current % 10;
-      for(int digit = 0; digit < DIGITS; digit++) {
-        if (digitAt(digit) +1 == used) {
+      for (int digit = 0; digit < DIGITS; digit++) {
+        if (digitAt(digit) + 1 == used) {
           incrementDigitBy(digit, 2);
         } else {
           incrementDigitBy(digit, 1);
@@ -51,14 +51,14 @@ public class FormingAMagicSquare {
     }
 
     private void incrementDigitBy(final int digit, final int increment) {
-      int delta = increment * (int)Math.pow(10, digit);
+      int delta = increment * (int) Math.pow(10, digit);
       current += delta;
     }
 
     private int digitAt(final int digit) {
       int register = current;
-      final int factor = (int)Math.pow(10, digit);
-      register = register % factor / (factor/10);
+      final int factor = (int) Math.pow(10, digit);
+      register = register % factor / (factor / 10);
       return register;
     }
   }
@@ -76,7 +76,7 @@ public class FormingAMagicSquare {
 
   private static void print(final String title, final int[][] s) {
     System.out.println(title);
-    for(int x=0; x<s[0].length; x++) {
+    for (int x = 0; x < s[0].length; x++) {
       for (int y = 0; y < s.length; y++) {
         System.out.print(s[x][y] + " ");
       }

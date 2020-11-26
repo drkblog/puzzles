@@ -19,7 +19,7 @@ public class MaxProfit {
     int minimum = A[0];
     int previous = A[0];
     boolean wasAscending = false;
-    int i=1;
+    int i = 1;
     while (i < A.length) {
       if (A[i] < previous && wasAscending) {
         profit = getProfit(profit, minimum, previous);
