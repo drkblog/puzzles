@@ -11,7 +11,7 @@ import java.util.Stack;
 public class Tree<V> {
 
   @RequiredArgsConstructor
-  private static class Node<V> {
+  static class Node<V> {
     private final V value;
     private Node<V> left;
     private Node<V> right;
