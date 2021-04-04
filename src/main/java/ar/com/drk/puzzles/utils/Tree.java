@@ -1,15 +1,18 @@
 package ar.com.drk.puzzles.utils;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
+import java.util.function.Function;
 
 public class Tree<V> {
 
+  @Getter
   @RequiredArgsConstructor
   static class Node<V> {
     private final V value;
@@ -17,7 +20,7 @@ public class Tree<V> {
     private Node<V> right;
   }
 
-  private Node<V> root;
+  private final Node<V> root;
 
   public Tree(final V rootValue) {
     root = new Node<>(rootValue);
@@ -27,21 +30,21 @@ public class Tree<V> {
     final List<V> result = Lists.newArrayList();
     final Stack<Node<V>> stack = new Stack<>();
 
-    stackLeftNodes(stack, root);
+    stackNodes(Node::getLeft, stack, root);
     while (!stack.empty()) {
       final Node<V> node = stack.pop();
       result.add(node.value);
-      stackLeftNodes(stack, node.right);
+      stackNodes(Node::getLeft, stack, node.right);
     }
 
     return result;
   }
 
-  private void stackLeftNodes(final Stack<Node<V>> stack, final Node<V> initialNode) {
+  private void stackNodes(final Function<Node<V>, Node<V>> selector, final Stack<Node<V>> stack, final Node<V> initialNode) {
     Node<V> node = initialNode;
     while (node != null) {
       stack.push(node);
-      node = node.left;
+      node = selector.apply(node);
     }
   }
 
