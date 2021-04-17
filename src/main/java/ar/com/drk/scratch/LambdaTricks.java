@@ -3,17 +3,32 @@ package ar.com.drk.scratch;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 public class LambdaTricks {
 
-  public static void main(final String[] args) {
+  final Queue<Supplier<Integer>> sources = new LinkedList<>();
 
-    final Queue<Supplier<Integer>> sources = new LinkedList<>();
-    sources.add(() -> 1);
-    sources.add(sources::size);
-    sources.add(() -> 3);
-
-    System.out.println(sources.stream().map(Supplier::get).collect(Collectors.toList()));
+  private Integer getInteger() {
+    final Integer value = sources.poll().get();
+    sources.add(this::getInteger);
+    sources.add(() -> value);
+    return value;
   }
+
+  public void run() {
+    sources.add(this::getInteger);
+    sources.add(() -> 1);
+    System.out.println(sources.poll().get());
+    System.out.println(sources.poll().get());
+    System.out.println(sources.poll().get());
+    System.out.println(sources.poll().get());
+    System.out.println(sources.poll().get());
+  }
+
+  public static void main(final String[] args) {
+    final LambdaTricks lambdaTricks = new LambdaTricks();
+    lambdaTricks.run();
+  }
+
+
 }
