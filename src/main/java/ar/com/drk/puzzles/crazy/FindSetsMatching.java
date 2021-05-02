@@ -1,22 +1,28 @@
 package ar.com.drk.puzzles.crazy;
 
-import javafx.util.Pair;
+import lombok.Value;
 
 public class FindSetsMatching {
 
-  public static void main(String[] args) {
-    int[] a = new int[]{2, 3, 7, 8};
-    int[] b = new int[]{1, 2, 9, 15};
+  @Value
+  static class Pair<L, R> {
+    private L left;
+    private R right;
+  }
 
-    int target = 14;
-    int left = 0;
+  public static void main(final String[] args) {
+    final int[] a = new int[]{2, 3, 7, 8};
+    final int[] b = new int[]{1, 2, 9, 15};
+
+    final int target = 14;
+    final int left = 0;
     int right = b.length - 1;
     boolean finished = false;
     Pair<Integer, Integer> lastHighest = null;
     Pair<Integer, Integer> lastLowest = null;
     Pair<Integer, Integer> exact = null;
     while (left < a.length && right > 0 && !finished) {
-      long current = a[left] + b[right];
+      final long current = a[left] + b[right];
       if (current > target) {
         lastHighest = new Pair<>(left, right);
         right--;
