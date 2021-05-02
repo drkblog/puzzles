@@ -14,8 +14,7 @@ public class FutureComparable {
       return Integer.compare(number, o.number);
     }
   }
-
-
+  
   static class Left extends Top<Left> {
     public Left(final int number) {
       super(number);
