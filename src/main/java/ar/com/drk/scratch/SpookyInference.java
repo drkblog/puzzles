@@ -10,7 +10,7 @@ public class SpookyInference {
   interface SecondLevel extends Top {
   }
 
-  interface FirstLevel<T extends SecondLevel & Comparable<? super SecondLevel>> {
+  interface FirstLevel<T extends SecondLevel & Comparable<SecondLevel>> {
     T get();
 
     int number();
@@ -21,9 +21,9 @@ public class SpookyInference {
         .thenComparing(FirstLevel::get);
   }
 
-  static class B implements SecondLevel, Comparable<Top> {
+  static class B implements SecondLevel, Comparable<SecondLevel> {
     @Override
-    public int compareTo(final Top o) {
+    public int compareTo(final SecondLevel o) {
       return 0;
     }
   }

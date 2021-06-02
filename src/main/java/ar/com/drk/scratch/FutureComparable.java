@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 public class FutureComparable {
 
   @RequiredArgsConstructor
-  static class Top<T extends Top> implements Comparable<T> {
+  static class Top<T extends Top<T>> implements Comparable<T> {
 
     final protected int number;
 
