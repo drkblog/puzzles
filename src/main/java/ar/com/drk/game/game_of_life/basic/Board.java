@@ -1,6 +1,10 @@
 package ar.com.drk.game.game_of_life.basic;
 
+import ar.com.drk.game.game_of_life.basic.matrix.FixedFiniteMatrix;
+import ar.com.drk.game.game_of_life.basic.matrix.IterationConsumer;
+import ar.com.drk.game.game_of_life.basic.matrix.Matrix;
 import com.google.common.collect.ImmutableSet;
+import lombok.RequiredArgsConstructor;
 
 import java.io.PrintStream;
 import java.util.Collection;
@@ -10,43 +14,30 @@ public class Board {
   public static final int ALIVE = 1;
   public static final int DEAD = 0;
 
-  private final int width;
-  private final int height;
-  private final int[][] board;
+  private final Matrix matrix;
 
   public Board(final int width, final int height) {
-    this.width = width;
-    this.height = height;
-    this.board = new int[width][height];
+    this.matrix = new FixedFiniteMatrix(width, height);
   }
-
-  public void set(final int x, final int y, final int newValue) {
-    board[x][y] = newValue;
-  }
-
-  public int get(final int x, final int y) {
-    return board[x][y];
-  }
-
+  
   public void printTo(final PrintStream out) {
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        out.print(get(x, y) == 1 ? 'X' : '-');
-      }
-      out.println();
-    }
+    final MatrixNewLineIterator matrixNewLineIterator = new MatrixNewLineIterator(
+        (x, y, value) -> out.print(matrix.get(x, y) == 1 ? 'X' : '-'),
+        () -> out.println()
+    );
+    matrix.iterateAll(matrixNewLineIterator::visit);
+    out.println("\n===");
   }
 
   private Set<Change> calculateNextGeneration() {
     final ImmutableSet.Builder<Change> builder = new ImmutableSet.Builder<>();
-    for (int y = 1; y < height - 1; y++) {
-      for (int x = 1; x < width - 1; x++) {
-        final Change change = eval(x, y);
-        if (change != null) {
-          builder.add(change);
-        }
+
+    matrix.iterateActive((x, y, value) -> {
+      final Change change = eval(x, y);
+      if (change != null) {
+        builder.add(change);
       }
-    }
+    });
     return builder.build();
   }
 
@@ -61,22 +52,22 @@ public class Board {
   }
 
   private boolean isAlive(final int x, final int y) {
-    return get(x, y) == ALIVE;
+    return matrix.get(x, y) == ALIVE;
   }
 
   private int aliveNeighbours(final int x, final int y) {
-    return get(x - 1, y - 1)
-        + get(x, y - 1)
-        + get(x + 1, y - 1)
-        + get(x - 1, y)
-        + get(x + 1, y)
-        + get(x - 1, y + 1)
-        + get(x, y + 1)
-        + get(x + 1, y + 1);
+    return matrix.get(x - 1, y - 1)
+        + matrix.get(x, y - 1)
+        + matrix.get(x + 1, y - 1)
+        + matrix.get(x - 1, y)
+        + matrix.get(x + 1, y)
+        + matrix.get(x - 1, y + 1)
+        + matrix.get(x, y + 1)
+        + matrix.get(x + 1, y + 1);
   }
 
   private boolean establishNextGeneration(final Set<Change> changes) {
-    changes.forEach(change -> change.applyTo(this));
+    changes.forEach(change -> change.applyTo(matrix));
     return !changes.isEmpty();
   }
 
@@ -86,7 +77,25 @@ public class Board {
 
   public static Board from(final int width, final int height, final Collection<Change> changes) {
     final Board board = new Board(width, height);
-    changes.forEach(change -> change.applyTo(board));
+    changes.forEach(change -> change.applyTo(board.matrix));
     return board;
+  }
+
+  @RequiredArgsConstructor
+  private static class MatrixNewLineIterator {
+    private final IterationConsumer<Integer, Integer, Integer> consumer;
+    private final Runnable newLineAction;
+    private Integer lastY = null;
+
+    public void visit(final int x, final int y, final int value) {
+      if (lastY == null) {
+        lastY = y;
+      }
+      if (y != lastY) {
+        newLineAction.run();
+        lastY = y;
+      }
+      consumer.accept(x, y, value);
+    }
   }
 }
