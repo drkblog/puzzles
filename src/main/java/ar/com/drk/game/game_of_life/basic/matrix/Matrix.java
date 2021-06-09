@@ -5,6 +5,14 @@ public interface Matrix {
 
   int get(int x, int y);
 
+  /**
+   * Iterate only the active section of the matrix (best effort).
+   * <p>
+   * The active section is the minimum rectangle containing all the cells different than zero. The implementation
+   * may implement this method just like iterateAll() in the worst case.
+   *
+   * @param iterationConsumer
+   */
   void iterateActive(IterationConsumer<Integer, Integer, Integer> iterationConsumer);
 
   void iterateAll(IterationConsumer<Integer, Integer, Integer> iterationConsumer);

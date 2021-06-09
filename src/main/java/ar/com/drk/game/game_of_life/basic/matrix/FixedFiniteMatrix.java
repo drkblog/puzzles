@@ -14,17 +14,27 @@ public class FixedFiniteMatrix implements Matrix {
 
   @Override
   public void set(final int x, final int y, final int newValue) {
+    if (isOutsideRange(x, y)) {
+      return;
+    }
     board[x][y] = newValue;
   }
 
   @Override
   public int get(final int x, final int y) {
+    if (isOutsideRange(x, y)) {
+      return 0;
+    }
     return board[x][y];
+  }
+
+  private boolean isOutsideRange(final int x, final int y) {
+    return x < 0 || x >= width || y < 0 || y >= height;
   }
 
   @Override
   public void iterateActive(final IterationConsumer<Integer, Integer, Integer> iterationConsumer) {
-    iterate(1, width - 1, 1, height - 1, iterationConsumer);
+    iterateAll(iterationConsumer);
   }
 
   @Override
